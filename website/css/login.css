@@ -1,0 +1,11 @@
+body {
+    text-align: center;
+    color: white;
+}
+#username {
+    text-decoration: underline;
+    color: white;
+}
+.img {
+    max-width: 80%;
+}

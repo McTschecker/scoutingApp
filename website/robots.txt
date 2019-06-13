@@ -1,0 +1,3 @@
+# https://support.google.com/webmasters/answer/6062596?hl=en
+User-agent: *
+Disallow: /admin/

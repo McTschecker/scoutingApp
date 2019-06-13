@@ -1,0 +1,45 @@
+#mainAdmin {
+    padding: 2%;
+    text-align: center !important;
+    font-size: 1.4em;
+}
+
+#submit {
+    /* height: 50px; */
+    color: #e5e5e5;
+    padding: 2%;
+    border-radius: 5px;
+    margin: 0 auto !important;
+    background-color: #0DCB0A;
+}
+
+b {
+    color: whitesmoke;
+}
+
+#matchNum {
+    font-size: 1.4em;
+    height: 30px;
+}
+
+.adminButton {
+    width: 50%;
+    font-size: 3em;
+    border: solid white 2px;
+    background-color: #e5e5e5;
+}
+
+#decrementButton {
+    color: rgb(196, 0, 0);
+    background-color: #e5e5e5;
+}
+
+#incrementButton {
+    color: rgb(5, 184, 2);
+    background-color: #e5e5e5;
+}
+
+#buttonAdminContainer {
+    display: flex;
+    flex-direction: row;
+}

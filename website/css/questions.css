@@ -1,0 +1,312 @@
+html,
+body {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    text-align: center !important;
+    background-color: #e5e5e5;
+}
+
+table {
+    width: 100%;
+    color: white;
+}
+
+td {
+    height: 11%;
+    width: 50%;
+}
+
+th {
+    font-size: 1.5em;
+    text-shadow: 1px 2px rgb(133, 139, 133);
+}
+
+h3 {
+    font-size: 1.7em;
+}
+
+h2 {
+    font-size: 2em;
+}
+
+#main_title {
+    font-size: 3em;
+}
+
+
+.teamSelect {
+    border-radius: 5px;
+    border-style: none;
+    font-size: 2em;
+    padding: 3%;
+}
+
+.red {
+    /* background: #fd3f35; */
+    background-color: rgb(221, 147, 147);
+}
+
+.blue {
+    background: #1876d6;
+}
+
+#main {
+    text-align: center;
+}
+
+.displayCounterImg {
+    width: 10%;
+    height: 10%;
+}
+
+.QA {
+    /* display: none; */
+    width: 100%;
+}
+
+.QA:before {
+    content: '';
+    width: 45%;
+    display: block;
+    background: #1876d6;
+    height: 10px;
+    margin: 30px auto;
+    line-height: 1.1;
+    border-radius: 50px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.answers {
+    color: white;
+}
+
+.answer {
+    border: 2px solid #fff;
+    border-radius: 10px;
+    padding: 3%;
+}
+
+.choice1 {
+    transition-duration: 0.4s;
+    background-color: #1876d6;
+    /* border: none; */
+}
+
+.choice2 {
+    transition-duration: 0.4s;
+    background: #fd3f35;
+    /* border: none; */
+}
+
+.choice3 {
+    transition-duration: 0.4s;
+    background: purple;
+    /* border: none; */
+}
+
+.choice4 {
+    transition-duration: 0.4s;
+    background: orange;
+    /* border: none; */
+}
+
+.question {
+    display: block;
+    color: black;
+}
+
+.subQuestionContainer,
+.subsubQuestionContainer {
+    display: none;
+    color: white;
+}
+
+.subsubQuestionContainer {
+    color: gainsboro;
+    background-color: rgb(26, 24, 24);
+}
+
+.subsubanswers {
+    display: flex;
+    flex-direction: row;
+}
+
+#subanswersCargoship {
+    display: flex;
+    flex-direction: row;
+}
+
+.addImage {
+    width: 75%;
+}
+
+.subquestion {
+    color: black;
+}
+
+#startScouting {
+    margin-top: 15px;
+    background-color: #0DCB0A;
+    color: white;
+    border: none;
+    font-size: 1.5em;
+    padding: 5% 25%;
+}
+
+#googleSignOut {
+    background-color: rgb(128, 128, 128);
+    color: white;
+    border: none;
+    margin-top: 10px;
+    font-size: 1.2em;
+    padding: 1% 1%;
+}
+
+#submitButton {
+    width: 100%;
+    display: block;
+    margin-top: 2%;
+    border: solid 2px white;
+    border-radius: 5px;
+    z-index: 1000;
+    background-color: #0DCB0A;
+}
+
+#submit {
+    font-size: 4em;
+    color: white;
+}
+
+#commentSection:before {
+    content: '';
+    width: 45%;
+    display: block;
+    background: #1876d6;
+    height: 10px;
+    margin: 30px auto;
+    line-height: 1.1;
+    border-radius: 50px;
+}
+
+#comments {
+    height: 120px;
+    width: 75%;
+    margin: 2%;
+    font-size: 1.25em;
+    border: solid 3px #1876d6;
+    border-radius: 5px;
+}
+
+#qObjects>div {
+    border: solid 3px black !important;
+    padding: 3%;
+    border-radius: 5px;
+}
+
+#cargoship,
+#rocket {
+    width: 100%;
+    /* background-color: #fd3f35; */
+    padding: 0.6%;
+}
+
+#dropCounterContainer {
+    width: 100%;
+    margin-top: 2%;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: row;
+}
+
+.counterButton {
+    background-color: white;
+    /* width: 50%; */
+    border-radius: 5px;
+    display: flex;
+    flex-direction: row;
+}
+
+.cargo {
+    border-right: 2px solid black;
+}
+
+.hatch {
+    border-left: 2px solid black;
+}
+
+.imgContainer {
+    /* background-color: blue; */
+    width: 100%;
+}
+
+.dropImage {
+    width: 100%;
+}
+
+.dropCounter,
+.cancel {
+    height: 50px;
+    width: 50px;
+    color: white;
+}
+
+.dropCounter {
+    background-color: #1876d6;
+}
+
+.cancel {
+    background-color: red;
+}
+
+.extras {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.subsubcounters {
+    display: flex;
+    flex-direction: row;
+}
+
+.HPCounter,
+.CargoCounter,
+.cancelCargoAdd,
+.cancelHPAdd {
+    width: 25%;
+    height: 30px;
+    line-height: 30px;
+}
+
+.countIndicator {
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.CargoCounter,
+.HPCounter {
+    background-color: #1876d6;
+    color: white;
+}
+
+.cancelHPAdd,
+.cancelCargoAdd {
+    background-color: #fd3f35;
+    color: #fff;
+}
+
+#main,
+#dropCounterContainer,
+#mainQ,
+#submitButton {
+    display: none;
+}

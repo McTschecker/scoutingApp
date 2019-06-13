@@ -1,0 +1,31 @@
+{
+  "name": "scoutingwebapp",
+  "version": "1.0.0",
+  "description": "Ihot 1414 scouting web app",
+  "main": "index.js",
+  "scripts": {
+    "minify": "node minify.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ihot-team1414/scoutingwebappFrontend.git"
+  },
+  "keywords": [
+    "frc",
+    "scouting"
+  ],
+  "author": "Ihot 1414 Team",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/ihot-team1414/scoutingwebappFrontend/issues"
+  },
+  "homepage": "https://github.com/ihot-team1414/scoutingwebappFrontend#readme",
+  "dependencies": {
+    "@node-minify/babel-minify": "^4.0.5",
+    "@node-minify/core": "^4.0.5",
+    "@node-minify/crass": "^4.0.5",
+    "@node-minify/html-minifier": "^4.0.5",
+    "@node-minify/uglify-es": "^4.0.5",
+    "firebase": "^5.11.1"
+  }
+}

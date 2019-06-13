@@ -1,0 +1,22 @@
+body {
+    background-color: #3e75b7;
+    font-family: 'Open Sans', sans-serif;
+}
+h1 {
+    color: white;
+}
+#main_title {
+    color: white
+}
+#ihot-brand-bar {
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    margin-top: 56px;
+    display: block;
+}
+
+#signOutAdmin {
+    height: 20px;
+    margin-bottom: 20px;
+}

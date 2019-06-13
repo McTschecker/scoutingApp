@@ -1,0 +1,17 @@
+node_modules
+.firebase/
+.DS_Store
+ihotscouting/firebase-debug.log
+functions/.eslintrc.json
+functions/package.json
+database.rules.json
+functions/package-lock.json
+firebase-debug.log
+realtimeDb.json
+analyze/dist/
+\.vscode/tasks\.json
+
+\.vscode/
+deployHosting/*
+
+package-lock\.json

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="css" />
+    <link rel="icon" href="/img/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="css/questions.css" />
+    <link rel="stylesheet" type="text/css" media="screen" href="css/matchSelect.css" />
+    <title>Scouting Match #</title>
+</head>
+
+<body>
+    <h1 id="main_title">IHOT Scouting</h1>
+
+    <div id="intro">
+        <h1 id="matchNumber">Match Number: Not loaded</h1>
+
+        <!-- /**
+        * * Team selection table
+        */ -->
+        <table class="slide" id="teamSelect">
+            <!-- table headings -->
+            <tr>
+                <!-- titles -->
+                <th>Red Alliance</th>
+                <th>Blue Alliance</th>
+            </tr>
+            <!-- team buttons -->
+            <tr>
+                <!-- Red 1 -->
+                <td class="teamSelect red" id="redTeam1" onclick="updateSelection(4)">
+                    Team not loaded
+                </td>
+                <!-- Blue 1 -->
+                <td class="teamSelect blue" id="blueTeam1" onclick="updateSelection(1)">
+                    Team not loaded
+                </td>
+            </tr>
+            <tr>
+                <!-- Red 2 -->
+                <td class="teamSelect red" id="redTeam2" onclick="updateSelection(5)">
+                    Team not loaded
+                </td>
+                <!-- Blue 2 -->
+                <td class="teamSelect blue" id="blueTeam2" onclick="updateSelection(2)">
+                    Team not loaded
+                </td>
+            </tr>
+            <tr>
+                <!-- Red 3 -->
+                <td class="teamSelect red" id="redTeam3" onclick="updateSelection(6)">
+                    Team not loaded
+                </td>
+                <!-- Blue 3 -->
+                <td class="teamSelect blue" id="blueTeam3" onclick="updateSelection(3)">
+                    Team not loaded
+                </td>
+            </tr>
+        </table>
+        <!-- start scouting button -->
+        <button id="startScouting" onclick="startScouting()">Start Scouting</button>
+    </div>
+
+
+    <!-- /**
+    * * Team attendance at match
+    */ -->
+    <div id="main">
+        <h1 id="teamChosen"></h1>
+
+        <div class="QA" id="qAttendance">
+            <div class="question">
+                <h2>Did the team show up?</h2>
+            </div>
+            <a class="answers" href="#qStartLevel">
+                <div class='answer choice1' id="q0a1"
+                    onclick="selectAttendance(true); document.getElementById('submit').style.display = 'block';">
+                    <h3>Yes</h3>
+                </div>
+                <div class='answer choice2' id="q0a2"
+                    onclick="selectAttendance(false); document.getElementById('submit').style.display = 'block';">
+                    <h3>No</h3>
+                </div>
+            </a>
+        </div>
+
+        <!-- Main Question Container -->
+        <div id="mainQ">
+            <!-- /**
+            * * Team starting level
+            */ -->
+            <div class="QA" id="qStartLevel">
+                <div class="question">
+                    <h2>On which level did your team start?</h2>
+                </div>
+                <a class="answers" href="#qAutoLine">
+                    <div class='answer choice1' id='q1l1' onclick="selectStartingLevel(1);">
+                        <h3>Level 1</h3>
+                    </div>
+                    <div class='answer choice2' id='q1l2' onclick="selectStartingLevel(2)">
+                        <h3>Level 2</h3>
+                    </div>
+                </a>
+            </div>
+<!--
+            /**
+            * * Autonomous line cross
+            */ -->
+            <div class="QA" id="qAutoLine">
+                <div class="question">
+                    <h2>Did the robot cross the auto line?</h2>
+                </div>
+                <a class="answers" href="#placeQuestion">
+                    <div class='answer choice1' id='q2Yes' onclick="selectAutoLine(true)">
+                        <h3>Yes</h3>
+                    </div>
+                    <div class='answer choice2' id='q2No' onclick="selectAutoLine(false)">
+                        <h3>No</h3>
+                    </div>
+                </a>
+            </div>
+            <!-- /**
+            * * Scoring
+            */ -->
+            <div class="QA" id="qObjects">
+                <div class="question" id="placeQuestion">
+                    <h2>Where did they just place an object?</h2>
+                </div>
+                <!-- /**
+                * * Rocket score input
+                */ -->
+                <div id="rocketContainer" class="place">
+                    <div id="rocket" onclick='revealNextQuestion("rocket")'>
+                        <h3>Rocket</h3>
+                    </div>
+                    <div class="subQuestionContainer" id='subRocketContainer'>
+                        <div class="subquestion">
+                            <h2>On what level was the object placed?</h2>
+                        </div>
+                        <div class='subanswers' id='subanswersRocket'>
+                            <div class='subanswer choice1' id='' onclick="">
+                                <div id='rocketLvl1' onclick='revealNextQuestion("rocketLvl1")'>
+                                    <h3>Lvl1</h3>
+                                </div>
+                                <div class='subsubQuestionContainer' id='subsubanswersRocketLvl1'>
+                                    <div class="subsubQuestion">
+                                        <h3>What was placed?</h3>
+                                    </div>
+                                    <div class='subsubanswers'>
+                                        <div class='cargo' onclick="addObject('rocket', 'cargo', 1)">
+                                            <!-- <h3>Cargo</h3> -->
+                                            <img src="img/cargo.png" class="addImage" />
+                                        </div>
+                                        <div class='hatch' onclick="addObject('rocket', 'HP', 1)">
+                                            <!-- <h3>HP</h3> -->
+                                            <img src="img/hatch.png" class="addImage" />
+                                        </div>
+                                    </div>
+                                    <div class='subsubcounters'>
+                                        <div class='CargoCounter' id='RocketLvl1CargoCounter'>
+                                            <span id='RocketLvl1CargoCounterText' class="countIndicator">0</span>
+                                        </div>
+                                        <div class='cancelCargoAdd' id='RocketLvl1CargoCancel'
+                                            onclick="removeObject('rocket', 'cargo', 1)">
+                                            <span id='RocketLvl1CargoCancelTextclass = "countIndicator"'>X</span>
+                                        </div>
+                                        <div class='HPCounter' id='RocketLvl1HPCounter'>
+                                            <span id='RocketLvl1HPCounterText' class="countIndicator">0</span>
+                                        </div>
+                                        <div class='cancelHPAdd' id='RocketLvl1HPCancel'
+                                            onclick="removeObject('rocket', 'HP', 1)">
+                                            <span id='RocketLvl1HPCancelText' class="countIndicator">X</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='subanswer choice2' id='' onclick="">
+                                <div id='rocketLvl2' onclick='revealNextQuestion("rocketLvl2")'>
+                                    <h3>Lvl2</h3>
+                                </div>
+                                <div class='subsubQuestionContainer' id='subsubanswersRocketLvl2'>
+                                    <div class="subsubQuestion">
+                                        <h3>What was placed?</h3>
+                                    </div>
+                                    <div class='subsubanswers'>
+                                        <div class='cargo' onclick="addObject('rocket', 'cargo', 2)">
+                                            <!-- <h3>Cargo</h3> -->
+                                            <img src="img/cargo.png" class="addImage" />
+                                        </div>
+                                        <div class='hatch' onclick="addObject('rocket', 'HP', 2)">
+                                            <!-- <h3>HP</h3> -->
+                                            <img src="img/hatch.png" class="addImage" />
+                                        </div>
+                                    </div>
+                                    <div class='subsubcounters'>
+                                        <div class='CargoCounter' id='RocketLvl2CargoCounter'>
+                                            <span id='RocketLvl2CargoCounterText' class="countIndicator">0</span>
+                                        </div>
+                                        <div class='cancelCargoAdd' id='RocketLvl2CargoCancel'
+                                            onclick="removeObject('rocket', 'cargo', 2)">
+                                            <span id='RocketLvl2CargoCancelText' class="countIndicator">X</span>
+                                        </div>
+                                        <div class='HPCounter' id='RocketLvl2HPCounter'>
+                                            <span id='RocketLvl2HPCounterText' class="countIndicator">0</span>
+                                        </div>
+                                        <div class='cancelHPAdd' id='RocketLvl2HPCancel'
+                                            onclick="removeObject('rocket', 'HP', 2)">
+                                            <span id='RocketLvl2HPCancelText' class="countIndicator">X</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class='subanswer choice3' id='' onclick="">
+                                <div id='rocketLvl3' onclick='revealNextQuestion("rocketLvl3")'>
+                                    <h3>Lvl3</h3>
+                                </div>
+                                <div class='subsubQuestionContainer' id='subsubanswersRocketLvl3'>
+                                    <div class="subsubQuestion">
+                                        <h3>What was placed?</h3>
+                                    </div>
+                                    <div class='subsubanswers'>
+                                        <div class='cargo' onclick="addObject('rocket', 'cargo', 3)">
+                                            <!-- <h3>Cargo</h3> -->
+                                            <img src="img/cargo.png" class="addImage" />
+                                        </div>
+                                        <div class='hatch' onclick="addObject('rocket', 'HP', 3)">
+                                            <!-- <h3>HP</h3> -->
+                                            <img src="img/hatch.png" class="addImage" />
+                                        </div>
+                                    </div>
+                                    <div class='subsubcounters'>
+                                        <div class='CargoCounter' id='RocketLvl3CargoCounter'>
+                                            <span id='RocketLvl3CargoCounterText' class="countIndicator">0</span>
+                                        </div>
+                                        <div class='cancelCargoAdd' id='RocketLvl3CargoCancel'
+                                            onclick="removeObject('rocket', 'cargo', 3)">
+                                            <span id='RocketLvl3CargoCancelText' class="countIndicator">X</span>
+                                        </div>
+                                        <div class='HPCounter' id='RocketLvl3HPCounter'>
+                                            <span id='RocketLvl3HPCounterText' class="countIndicator">0</span>
+                                        </div>
+                                        <div class='cancelHPAdd' id='RocketLvl3HPCancel'
+                                            onclick="removeObject('rocket', 'HP', 3)">
+                                            <span id='RocketLvl3HPCancelText' class="countIndicator">X</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- /**
+                * * Cargoship score input
+                */ -->
+                <div id="cargoshipContainer" class="place">
+                    <div id="cargoship" onclick='revealNextQuestion("cargoship")'>
+                        <h3>Cargoship</h3>
+                    </div>
+                    <div class="subQuestionContainer" id='subCargoshipContainer'>
+                        <div class="subquestion" id='subquestionCargo'>
+                            <h2>What was placed?</h2>
+                        </div>
+                        <div class='subanswers' id='subanswersCargoship' href="#qBreak">
+                            <div class='cargo choice1' onclick="addObject('cargoship', 'cargo')">
+                                <!-- <h3>Cargo</h3> -->
+                                <img src="img/cargo.png" class="addImage" />
+                            </div>
+                            <div class='hatch choice2' onclick="addObject('cargoship', 'HP')">
+                                <!-- <h3>HP</h3> -->
+                                <img src="img/hatch.png" class="addImage" />
+                            </div>
+                        </div>
+                        <div class='subsubcounters'>
+                            <div class='CargoCounter' id='CargoshipCargoCounter' onclick="">
+                                <span id='CargoshipCargoCounterText' class="countIndicator">0</span>
+                            </div>
+                            <div class='cancelCargoAdd' id='CargoshipCargoCancel'
+                                onclick="removeObject('cargoship', 'cargo')">
+                                <span id='CargoshipCargoCancelText' class="countIndicator">X</span>
+                            </div>
+                            <div class='HPCounter' id='CargoshipHPCounter' onclick="">
+                                <span id='CargoshipHPCounterText' class="countIndicator">0</span>
+                            </div>
+                            <div class='cancelHPAdd' id='CargoshipHPCancel' onclick="removeObject('cargoship', 'HP')">
+                                <span id='CargoshipHPCancel' class="countIndicator">X</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- /**
+            * * Robot breaking
+            */ -->
+            <div class="QA" id="qBreak">
+                <div class="question">
+                    <h2>Did the robot fall or break down during the match?</h2>
+                </div>
+                <a class="answers" href="#qClimb">
+                    <div class='answer choice1' id='qBreakYes' onclick="selectProblem(true)">
+                        <h3>Yes</h3>
+                    </div>
+                    <div class='answer choice2' id='qBreakNo' onclick="selectProblem(false)">
+                        <h3>No</h3>
+                    </div>
+                </a>
+            </div>
+
+            <!-- /**
+            * * Robot climb level
+            */ -->
+            <div class="QA" id="qClimb">
+                <div class="question">
+                    <h2>On what level did the robot climb on?</h2>
+                </div>
+                <a class="answers" href='#qDefended'>
+                    <div class='answer choice1' id='qClimbLevel1' onclick="selectClimbLevel(1)">
+                        <h3>Level 1</h3>
+                    </div>
+                    <div class='answer choice2' id='qClimbLevel2' onclick="selectClimbLevel(2)">
+                        <h3>Level 2</h3>
+                    </div>
+                    <div class='answer choice3' id='qClimbLevel3' onclick="selectClimbLevel(3)">
+                        <h3>Level 3</h3>
+                    </div>
+                    <div class='answer choice4' id='qClimbLevel0' onclick="selectClimbLevel(0)">
+                        <h3>Did not climb</h3>
+                    </div>
+                </a>
+            </div>
+
+            <!-- /**
+            * * Robot defended?
+            */ -->
+            <div class="QA" id="qDefended">
+                <div class="question">
+                    <h2>Was the robot defended by another team?</h2>
+                </div>
+                <a class="answers" href='#qDefenseBot'>
+                    <div class='answer choice1' id='qDefended1' onclick="updateDefended(true)">
+                        <h3>Yes</h3>
+                    </div>
+                    <div class='answer choice2' id='qDefended2' onclick="updateDefended(false)">
+                        <h3>No</h3>
+                    </div>
+                </a>
+            </div>
+
+            <!-- /**
+            * * Defense bot?
+            */ -->
+            <div class="QA" id="qDefenseBot">
+                <div class="question">
+                    <h2>Was your robot a defense bot?</h2>
+                </div>
+                <a class="answers" href='#commentSection'>
+                    <div class='answer choice1' id='qDefenseBot1' onclick="isDefenseBot(true)">
+                        <h3>Yes</h3>
+                    </div>
+                    <div class='answer choice2' id='qDefenseBot2' onclick="isDefenseBot(false)">
+                        <h3>No</h3>
+                    </div>
+                </a>
+            </div>
+
+            <!-- /**
+            * * Additional comments
+            */ -->
+            <div id="commentSection">
+                <h3>Comments</h3>
+                <textarea id="comments" rows="5" cols="60" placeholder="Put your comments here"></textarea>
+            </div>
+        </div>
+
+        <!-- /**
+        * * Submit data
+        */ -->
+        <div id="submitButton" onclick="submitData()">
+            <span id="submit">Submit</span>
+        </div>
+
+        <!-- /**
+        * * Google signout
+        */ -->
+        <button onclick="googleSignOut()" id="googleSignOut">
+            Google Signout
+        </button>
+        <br /><br /><br /><br /><br /><br /><br /><br /><br />
+
+        <!-- /**
+        * * Drop counters
+        */ -->
+        <div class="counter" id="dropCounterContainer">
+            <!-- /**
+            * * Cargo drop counter
+            */ -->
+            <div class="cargo counterButton" id="dropCargo">
+                <div class="extras" id='cargoExtra'>
+                    <div class="dropCounter" id='dropCargoCounter'>
+                        <p id='dropCargoCounterText'>0</p>
+                    </div>
+                    <div class="cancel" id='cancelCargoDrop' onclick="cancelDrop('cargo')">
+                        <p class='cancelText'>X</p>
+                    </div>
+                </div>
+                <div class="imgContainer" onclick="addCargoDropped()">
+                    <img src="img/cargo.png" id="cargoImage" class="dropImage" />
+                </div>
+            </div>
+            <!-- /**
+            * * Hatch drop counter
+            */ -->
+            <div class="hatch counterButton" id="dropHP">
+                <div class="imgContainer" onclick="addHpDropped()">
+                    <img src="img/hatch.png" class="dropImage" id="hpImage" />
+                </div>
+                <div class="extras" id='HPExtra'>
+                    <div class="dropCounter" id='dropHPCounter'>
+                        <p id='dropHPCounterText'>0</p>
+                    </div>
+                    <div class="cancel" id='cancelHPDrop' onclick="cancelDrop('HP')">
+                        <p class='cancelText'>X</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase CDN -->
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
+    <script src="/__/firebase/6.0.0/firebase-performance.js"></script>
+    <script src="scripts/script.js"></script>
+    <!-- Smooth scrolling script -->
+    <script src="scripts/zenscroll.js"></script>
+
+    <script>
+        var perf = firebase.performance();
+
+        var provider = new firebase.auth.GoogleAuthProvider();
+        var clientUser = firebase.auth().currentUser;
+        var uid;
+        var event;
+
+        var startedScouting = false;
+
+        var comment = document.getElementById('comments');
+
+        window.onload = function () {
+            //redirect user to login page if not signed in
+            firebase.auth().onAuthStateChanged(function (user) {
+                if (!user) {
+                    // User is not signed in
+                    window.location = "index.html";
+                    uid = user.uid;
+                }
+                initTeams();
+            });
+            // console.log(clientUser);
+        };
+
+        /**
+        * * Google signout
+        */
+        function googleSignOut() {
+            firebase
+                .auth()
+                .signOut()
+                .then(
+                    function () {
+                        console.log("Signout Succesfull");
+                        window.location = "index.html";
+                    },
+                    function (error) {
+                        console.log("Signout Failed");
+                    }
+                );
+        }
+        //submits data to database
+
+        // Question divs (whole)
+
+        //returns true if match is in teleop mode
+        //returns false if match is in auto
+
+        const db = firebase.firestore();
+        var matchNumber;
+        //team update function
+        function initTeams() {
+            //gets from database
+            db.collection("selection")
+                .doc("currentTeam")
+                .onSnapshot(function (doc) {
+                    if (!startedScouting) {
+                        console.log("updating teams");
+                        resetButtons();
+                        data = doc.data();
+                        document.getElementById("matchNumber").innerHTML =
+                            "Match Number: " + data.matchNumber;
+                        document.getElementById(
+                            "blueTeam1"
+                        ).innerHTML = data.blueTeam.team1.number.substring(3);
+                        document.getElementById(
+                            "blueTeam2"
+                        ).innerHTML = data.blueTeam.team2.number.substring(3);
+                        document.getElementById(
+                            "blueTeam3"
+                        ).innerHTML = data.blueTeam.team3.number.substring(3);
+                        document.getElementById(
+                            "redTeam1"
+                        ).innerHTML = data.redTeam.team1.number.substring(3);
+                        document.getElementById(
+                            "redTeam2"
+                        ).innerHTML = data.redTeam.team2.number.substring(3);
+                        document.getElementById(
+                            "redTeam3"
+                        ).innerHTML = data.redTeam.team3.number.substring(3);
+                        teamsLoaded = true; //ensures teams are loaded
+                        matchNumber = data.matchNumber;
+                        event = data.event;
+                    }
+                });
+        }
+
+        /**
+        * * Submits data to Firebase
+        */
+        function submitData() {
+            console.log("Directly " + firebase.auth().currentUser.uid);
+            uid = firebase.auth().currentUser.uid;
+            console.log("Uid: " + uid);
+            db.collection("matches")
+                .add({ // adding values to the DB
+                    matchNumber: matchNumber,
+                    userID: uid,
+                    team: teamSelected,
+                    userName: firebase.auth().currentUser.displayName,
+                    event: event,
+                    wasPresent: wasPresent,
+                    startingLevel: startingLevel,
+                    crossedAuto: crossedAuto,
+                    climbLevel: climbLevel,
+                    brokenOrFall: problem,
+
+                    cargoShipCargo: cargoShipCargo,
+                    cargoShipHP: cargoShipHP,
+                    cargoShipTotal: cargoShipHP + cargoShipCargo,
+
+                    rocket1LvlHP: rocket1LvlHP,
+                    rocket1LvlCargo: rocket1LvlCargo,
+                    rocket1LvlTotal: rocket1LvlCargo + rocket1LvlHP,
+
+                    rocket2LvlHP: rocket2LvlHP,
+                    rocket2LvlCargo: rocket2LvlCargo,
+                    rocket2LvlTotal: rocket2LvlCargo + rocket2LvlHP,
+
+                    rocket3LvlHP: rocket3LvlHP,
+                    rocket3LvlCargo: rocket3LvlCargo,
+                    rocket3LvlTotal: rocket3LvlCargo + rocket3LvlHP,
+
+                    rocketCargo: rocket3LvlCargo + rocket2LvlCargo + rocket1LvlCargo,
+                    rocketHP: rocket3LvlHP + rocket2LvlHP + rocket1LvlHP,
+
+                    rocketTotal: rocket3LvlCargo + rocket2LvlCargo + rocket1LvlCargo + rocket3LvlHP + rocket2LvlHP +
+                        rocket1LvlHP,
+                    // autonomous: autonomous,
+                    // teleop: teleop,
+                    droppedCargo: droppedCargo,
+                    droppedHP: droppedHP,
+
+                    defended: defended,
+                    defenseBot: defenseBot,
+
+                    comment: comments.value
+                })
+                .then(function () {
+                    console.log("Document successfully written!");
+                    alert("success");
+                    location.reload(); //reload page when document written to DB to avoid submitting twice (not enough because if user is  on slow connection, they can write multiple documents)
+                })
+                .catch(function (error) {
+                    console.error("Error writing document: ", error);
+                    alert("THE DATA COULD NOT BE SAVED, \nplease try again");
+                });
+        }
+
+        var rocketChildren = document.getElementById('subRocketContainer').children;
+
+        /**
+        * * Cycles between questions
+        */
+
+        function revealNextQuestion(id) {
+            switch (id) {
+                case 'rocket':
+                    document.getElementById('subRocketContainer').style.display = 'block';
+                    for (var each of rocketChildren) {
+                        each.style.display = 'block';
+                    }
+                    document.getElementById('subCargoshipContainer').style.display = 'none';
+                    break;
+                case 'cargoship':
+                    document.getElementById('subCargoshipContainer').style.display = 'block';
+                    document.getElementById('subRocketContainer').style.display = 'none';
+                    document.getElementById('subsubanswersRocketLvl1').style.display = 'none';
+                    document.getElementById('subsubanswersRocketLvl2').style.display = 'none';
+                    document.getElementById('subsubanswersRocketLvl3').style.display = 'none';
+                    break;
+                case 'rocketLvl1':
+                    document.getElementById('subsubanswersRocketLvl1').style.display = 'block';
+                    document.getElementById('subsubanswersRocketLvl2').style.display = 'none';
+                    document.getElementById('subsubanswersRocketLvl3').style.display = 'none';
+                    break;
+                case 'rocketLvl2':
+                    document.getElementById('subsubanswersRocketLvl2').style.display = 'block';
+                    document.getElementById('subsubanswersRocketLvl1').style.display = 'none';
+                    document.getElementById('subsubanswersRocketLvl3').style.display = 'none';
+                    break;
+                case 'rocketLvl3':
+                    document.getElementById('subsubanswersRocketLvl3').style.display = 'block';
+                    document.getElementById('subsubanswersRocketLvl2').style.display = 'none';
+                    document.getElementById('subsubanswersRocketLvl1').style.display = 'none';
+                    break;
+                case 'subquestionCargo':
+                    document.getElementById('subanswersCargoship').style.display = 'block';
+                    break;
+            }
+        }
+
+        /**
+        * * Starts scouting timer & confirms team selection
+        */
+
+        function startScouting() {
+            if (teamSelected != null && teamsLoaded) {
+                timeBeginning = new Date();
+                // //begin match Timer
+                console.log("Scouting Starting")
+                document.getElementById("intro").style.display = 'none';
+                document.getElementById('main').style.display = 'block';
+                document.getElementById('submitButton').style.display = 'none';
+                document.getElementById('teamChosen').innerText = teamSelected;
+
+                // var matchTimer = setTimeout(endMatch, matchTime);
+                // document.getElementById("intro").style.display = "none";
+                // document.getElementById("main").style.display = "block";
+                // //Show new screen
+                // document.getElementById("dropCounter").style.display = "flex";
+                startedScouting = true;
+            } else {
+                alert("No team selected");
+            }
+        }
+    </script>
+</body>
+
+</html>

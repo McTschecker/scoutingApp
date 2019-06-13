@@ -1,0 +1,50 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Open Sans", sans-serif;
+    padding: none;
+    margin: none;
+    text-align: center !important;
+    background-color: #4b4b4b;
+}
+
+table {
+    width: 100%;
+    color: white;
+}
+
+td {
+    height: 11%;
+    width: 50%;
+}
+
+th {
+    font-size: 1.5em;
+}
+
+h1, h2 {
+    color: rgb(216, 216, 216);
+}
+
+#submit {
+    width: 100%;
+    display: block;
+    margin-top: 2%;
+    /* margin-bottom: 150px; */
+    margin-bottom: 35%;
+}
+input {
+    height: 20px;
+}
+#submitButton {
+    font-size: 4em;
+    color: white;
+    background-color: #0DCB0A;
+    margin: 0 auto !important;
+    padding: 4%;
+    width: 75%;
+    border: solid 2px white;
+    border-radius: 5px;
+}

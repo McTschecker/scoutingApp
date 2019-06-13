@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Manual Team Entering</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Stylesheets -->
+  <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../css/manual.css" />
+</head>
+
+<body>
+  <!-- Page heading -->
+  <h1>Change Teams manually</h1>
+  <h2 id="matchDB">Current Match Number: Not Loaded</h2>
+  <h2>Match Number:</h2>
+  <input type="number" value="MatchNumber" id="matchNumber" />
+
+  <table class="slide" id="teamSelect">
+    <!-- table headings -->
+    <tr>
+      <!-- titles -->
+      <th>Blue Alliance</th>
+      <th>Red Alliance</th>
+    </tr>
+    <!-- team buttons -->
+    <tr>
+      <!-- Blue 1 -->
+      <td class="teamSelect blue" id="blueTeam1">
+        <input type="number" value="team" id="blue1" class="teamNum" />
+      </td>
+      <!-- Red 1 -->
+      <td class="teamSelect red" id="redTeam1">
+        <input type="number" value="team" id="red1" class="teamNum" />
+      </td>
+    </tr>
+    <tr>
+      <!-- Blue 2 -->
+      <td class="teamSelect blue" id="blueTeam2">
+        <input type="number" value="team" id="blue2" class="teamNum" />
+      </td>
+      <!-- Red 2 -->
+      <td class="teamSelect red" id="redTeam2">
+        <input type="number" value="team" id="red2" class="teamNum" />
+      </td>
+    </tr>
+    <tr>
+      <!-- Blue 3 -->
+      <td class="teamSelect blue" id="blueTeam3">
+        <input type="number" value="team" id="blue3" class="teamNum" />
+      </td>
+      <!-- Red 3 -->
+      <td class="teamSelect red" id="redTeam3">
+        <input type="number" value="team" id="red3" class="teamNum" />
+      </td>
+    </tr>
+  </table>
+
+  <div id="submit">
+    <div id="submitButton" onclick="submit()">Submit</div>
+  </div>
+
+  <!-- JS Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
+  <script src="/__/firebase/6.0.0/firebase-performance.js"></script>
+  <!-- //* Firebase Configuration -->
+  <script src="/__/firebase/init.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
+  <script>
+    var perf = firebase.performance();
+
+    var matchNumber;
+    var provider = new firebase.auth.GoogleAuthProvider();
+    var clientUser = firebase.auth().currentUser;
+    window.onload = function () {
+      //redirect user to login page if not signed in
+      firebase.auth().onAuthStateChanged(function (user) {
+        //might be replaced with main.js export
+        if (!user) {
+          // User is not signed in
+          window.location = "index.html";
+          uid = user.uid;
+        }
+        initTeams();
+      });
+      // console.log(clientUser);
+    };
+    const db = firebase.firestore();
+
+    function initTeams() {
+      console.log("Getting current match from DB");
+      db.collection("selection").doc("currentTeam").onSnapshot(function (doc) {
+        console.log("updating teams");
+        data = doc.data();
+        document.getElementById("matchDB").innerHTML = "Current Match Number: " + data.matchNumber;
+      });
+    }
+
+    // function checkData() {
+    // }
+
+    // Logs Input match data to console
+    function submit() {
+      console.log("submitting")
+      // All data input to page
+      var matchData = {
+        matchNumber: Number(document.getElementById("matchNumber").value),
+        event: "statesTest",
+        blueTeam: {
+          team1: {
+            number: "frc" + (document.getElementById("blue1").value),
+            taken: false
+          },
+          team2: {
+            number: "frc" + (document.getElementById("blue2").value),
+            taken: false
+          },
+          team3: {
+            number: "frc" + (document.getElementById("blue3").value),
+            taken: false
+          }
+        },
+        redTeam: {
+          team1: {
+            number: "frc" + (document.getElementById("red1").value),
+            taken: false
+          },
+          team2: {
+            number: "frc" + (document.getElementById("red2").value),
+            taken: false
+          },
+          team3: {
+            number: "frc" + (document.getElementById("red3").value),
+            taken: false
+          }
+        }
+      };
+      console.log(matchData);
+      var res = db.collection("selection").doc("currentTeam").set(matchData);
+      console.log(res);
+    }
+  </script>
+
+</body>
+
+</html>

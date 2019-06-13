@@ -1,0 +1,104 @@
+<!-- /**
+* * Admin Authentication Page
+*/ -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Please Authenticate to accces the IHot Scouting App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="/img/favicon.ico">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="Stylesheets/auth.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="Stylesheets/main.css" />
+</head>
+
+<body>
+
+  <button onclick="googleSignin()">Google Signin</button>
+  <button onclick="googleSignout()">Google Signout</button>
+  <!-- Text to show the username -->
+  <span id="username"></span>
+
+  <!-- Loads in Firebase -->
+  <!-- Firebase App is always required and must be first -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+  <script src="/__/firebase/6.0.0/firebase-performance.js"></script>
+  <!-- //* Firebase Configuration -->
+  <script src="/__/firebase/init.js"></script>
+  <script>
+    var perf = firebase.performance();
+
+    var provider = new firebase.auth.GoogleAuthProvider();
+    //provider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+    // see https://developers.google.com/identity/protocols/googlescopes for possible scopes
+      /**
+    * * Intializes App: checks if User is signed in
+    */
+    function initApp() {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (user) {
+          //User is signed in
+          document.getElementById("username").textContent =
+            "Logged in as: " + user.displayName;
+          console.log(user.displayName);
+          window.location = "matchSelect.html";
+        } else {
+          // User is signed out.
+        }
+      });
+    }
+
+    /**
+    * * Signs user in
+    * * @param myParam One Parameter
+    */
+    function googleSignin() { // Signing in with google
+      firebase
+        .auth()
+
+        .signInWithRedirect(provider)
+        .then(function (result) {
+          var token = result.credential.accessToken;
+          // var user = result.user;
+          window.location = "matchSelect.html";
+        })
+        .catch(function (error) {
+          var errorCode = error.code;
+          var errorMessage = error.message;
+
+          console.log(error.code);
+          console.log(error.message);
+        });
+    }
+    /**
+    *  * Signs the User out
+    */
+    function googleSignout() { // Signing out with google
+      firebase
+        .auth()
+        .signOut()
+
+        .then(
+          function () {
+            console.log("Signout Succesfull");
+          },
+          function (error) {
+            console.log("Signout Failed");
+          }
+        );
+    }
+    /**
+    * *  Initializes app on page load
+    */
+    window.onload = function () {
+      initApp();
+    };
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,186 @@
+<!-- /**
+* * Match Selection (Admin Panel)
+*/ -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <!-- <meta Access-Control-Allow-Origin: "https://us-central1-ihot1414scoutingappdemo.cloudfunctions.net/updateTeamsForCurrentMatch" /> -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="../css/main.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+    integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+  <link rel="icon" href="/img/favicon.ico">
+
+  <link rel="stylesheet" type="text/css" media="screen" href="../css/main.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="../css/matchSelect.css" />
+  <title>Admin Panel</title>
+
+</head>
+
+<body>
+  <h1 id="matchNumber">Match Number: Not loaded</h1>
+  <!-- INITILIZES FIREBASE -->
+  <!-- Firebase App is always required and must be first -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-app.js"></script>
+
+  <!-- Add additional services that you want to use -->
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.8.4/firebase-functions.js"></script>
+  <script src="/__/firebase/6.0.0/firebase-performance.js"></script>
+  <!-- //* Firebase Configuration -->
+  <script src="/__/firebase/init.js"></script>
+
+  <script>
+    var firestore = firebase.firestore();
+    var perf = firebase.performance();
+
+    var provider = new firebase.auth.GoogleAuthProvider(); //Initalizes the auth provider
+    var clientUser = firebase.auth().currentUser; // Selects the current user, which is signed in
+    var functions = firebase.functions(); // Initalizes Functions integration - handles calling of functions
+
+    /**
+    * *  Signs user out
+    */
+
+    function googleSignOut() {
+      firebase
+        .auth()
+        .signOut()
+        .then(
+          function () {
+            console.log("Signout Succesfull");
+            window.location = "index.html";
+          },
+          function (error) {
+            console.log("Signout Failed");
+          }
+        );
+    }
+
+    /**
+    * * Updates the teams
+    * * Handles promise of getTeams()
+    */
+    function updateTeams() {
+      getTeams().then((result) => {
+        console.log(result);
+      }).catch((err) => {
+        console.error(err);
+      });
+    }
+
+
+    /**
+    * * Gets teams
+    * @params matchNum shows match number selected by admin
+    * * returns: Promise:response of firestore database change code
+    */
+
+    async function getTeams() {
+      var matchNumber;
+      try {
+        // matchNumber = Number(document.getElementById("matchNum").value);
+        matchNumber = document.getElementById("matchNum").value;
+        var teamsFunction = firebase.functions().httpsCallable('getTeamsOfMatch');
+        var teams = await teamsFunction({
+          matchNumber: matchNumber
+        });
+        // console.log(teams)
+        var res = await firestore.collection("selection").doc("currentTeam").set(teams.data);
+        return res // return firestore data
+      } catch (error) {
+        throw new Error("Error during update" + error);
+      }
+    }
+
+    /**
+    * * Intitiates match by finding current match number
+    */
+
+    function initMatch() { // Retieving current match number from firestore DB
+      console.log("Getting current match from DB");
+      firestore.collection("selection").doc("currentTeam").onSnapshot(function (doc) { // database path
+        console.log("updating teams");
+        data = doc.data();
+        document.getElementById("matchNumber").innerHTML = "Match Number: " + data.matchNumber;
+        document.getElementById("matchNum").value = data.matchNumber;
+      });
+    }
+
+    /**
+    * * Redirects user to login page if not signed in
+    */
+
+    window.onload = function () {
+      firebase.auth().onAuthStateChanged(function (user) {
+        if (!user) {
+          // User is not signed in
+          window.location = "index.html";
+          uid = user.uid;
+        }
+        initMatch(); // if user is signed in, run the function
+      });
+    };
+  </script>
+
+  <!-- /**
+  * * Update match
+  */ -->
+  <h1>Update Current Match</h1>
+
+  <div id="mainAdmin">
+    <b>Please Enter Match Number</b><br /><br />
+    <input type="number" id="matchNum" /><br /><br />
+    <!-- Up down arrows -->
+    <div id="buttonAdminContainer">
+      <div class="adminButton" id="decrementButton" onclick="updateNumber('down')">
+        <i class="fas fa-arrow-down"></i>
+      </div>
+      <div class="adminButton" id="incrementButton" onclick="updateNumber('up')">
+        <i class="fas fa-arrow-up"></i>
+      </div>
+    </div>
+
+    <br /><br />
+    <!-- Button to submit -->
+    <div onclick="updateTeams()" id="submit">Submit</div>
+  </div>
+
+  <br /><br /><br />
+  <!-- Sign out with Google -->
+  <div onclick="googleSignOut()" id="signOutAdmin">Google Signout</div>
+
+  <script>
+    /**
+    * * Match Number increment/decrement
+    * !
+    * ? Question
+    * TODO: TODOD
+    * @param type button which is clicked, selecting the action
+    */
+    function updateNumber(type) {
+      let value = parseInt(document.getElementById("matchNum").value);
+      switch (type) {
+        case 'up':
+          value += 1;
+          break;
+        case 'down':
+          if (value > 0) {
+            value -= 1;
+          }
+          break;
+        default:
+          break;
+      }
+
+      document.getElementById("matchNum").value = value;
+    }
+  </script>
+
+</body>
+
+</html>

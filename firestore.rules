@@ -1,0 +1,127 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /matches/{matches=**} {
+    	allow read: if request.auth.uid != null;
+      allow create: if request.auth.uid != null && //isValidUser(request.auth.token.email) &&
+      request.resource.data.userID == request.auth.uid &&
+     isValidMatchData(request.resource.data);
+      allow update, delete: if isValidAdmin(request.auth.token.email);
+
+    }
+  	match /selection/{selection=**}{
+    	allow read: if request.auth.uid != null;
+      allow update: if isValidAdmin(request.auth.token.email);
+    }
+    match /events/{event=**}{
+      allow read: if request.auth.uid != null;
+      match /averages/{average}{
+        allow read: if request.auth.uid != null //&& request.query.limit <= 20;
+  	  }
+    }
+  }
+}
+//FUNCTIONS BELOW
+
+
+//MAIN test function to check if it is valid match Data
+function isValidMatchData(message){
+  return checkMeta(message)
+  && checkRobotGeneral(message)
+  && checkUnspecificCounters(message)
+  && checkSpecificCounters(message)
+  && checkDropped(message)
+  && checkComments(message.comment)
+}
+
+function checkMeta(message){
+	return message.matchNumber > 0
+  && message.matchNumber is int
+  && message.team > 0
+  && message.team is int
+  && message.userName == request.auth.token.name
+  && message.event is string
+}
+function checkRobotGeneral(message){
+  return message.wasPresent is bool
+  && checkStartingLevel(message.startingLevel, message.wasPresent)
+  && message.crossedAuto is bool
+  && checkClimb(message.climbLevel)
+  && message.brokenOrFall is bool
+}
+function checkUnspecificCounters(message){
+	//succesful HP and Cargo
+	return message.cargoShipCargo >= 0
+  && message.cargoShipCargo <= 8
+
+  && message.cargoShipHP >= 0
+  && message.cargoShipHP <= 8
+
+  && message.cargoShipTotal >= 0
+  && message.cargoShipTotal <= 16
+
+  && message.rocketCargo >= 0
+  && message.rocketCargo <= 12
+
+  && message.rocketHP >= 0
+  && message.rocketHP <= 12
+
+  && message.rocketTotal >= 0
+  && message.rocketTotal <= 24
+
+  //rocket levels
+  && message.rocket1LvlTotal >= 0
+  && message.rocket1LvlTotal <= 8
+
+  && message.rocket2LvlTotal >= 0
+  && message.rocket2LvlTotal <= 8
+
+  && message.rocket3LvlTotal >= 0
+  && message.rocket3LvlTotal <= 8
+}
+
+function checkSpecificCounters(message){
+   //rocket HP
+  return  message.rocket1LvlHP >= 0
+  && message.rocket1LvlHP <= 4
+
+  && message.rocket2LvlHP >= 0
+  && message.rocket2LvlHP <= 4
+
+  && message.rocket3LvlHP >= 0
+  && message.rocket3LvlHP <= 4
+
+  //rocket Cargo
+  && message.rocket1LvlCargo >= 0
+  && message.rocket1LvlCargo <= 4
+
+  && message.rocket2LvlCargo >= 0
+  && message.rocket2LvlCargo <= 4
+
+  && message.rocket3LvlCargo >= 0
+  && message.rocket3LvlCargo <= 4
+}
+
+function checkDropped(message){
+  return message.droppedCargo >= 0
+  && message.droppedHP >= 0
+  && message.droppedHP < 20
+  && message.droppedCargo < 30
+}
+
+function checkComments(comments){
+	return comments is string
+}
+
+//Helper functions
+function checkClimb(climbed){
+	return climbed is int && (climbed == 0 || climbed == 1 || climbed == 2 || climbed == 3);
+}
+function checkStartingLevel(level, wasPresent){
+	return level == 1 || level == 2 || !wasPresent;
+}
+function isValidUser(email){
+ 	return email.matches('.*aischool[.]org$')
+}
+function isValidAdmin(email){
+	return email == "minecrafttschecker@gmail.com" || email == "victor.guyard@aischool.org" || email == "flipfloopgames@gmail.com" || email== "flblank@aischool.org";
+}
