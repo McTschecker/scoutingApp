@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "ihot1414scoutingappdemo"
+  },
+  "targets": {
+    "ihot1414scoutingappdemo": {
+      "hosting": {
+        "scout": [
+          "ihot1414scoutingappdemo"
+        ]
+      }
+    }
+  }
+}

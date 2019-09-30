@@ -436,18 +436,18 @@
     <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase-firestore.js"></script>
     <script src="/__/firebase/6.0.0/firebase-performance.js"></script>
+    <!-- Intializes Firebase -->
+    <script src="/__/firebase/init.js"></script> 
     <script src="scripts/script.js"></script>
     <!-- Smooth scrolling script -->
     <script src="scripts/zenscroll.js"></script>
 
     <script>
-        var perf = firebase.performance();
-
         var provider = new firebase.auth.GoogleAuthProvider();
         var clientUser = firebase.auth().currentUser;
         var uid;
         var event;
-
+        var perf = firebase.performance();
         var startedScouting = false;
 
         var comment = document.getElementById('comments');
